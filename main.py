@@ -3,19 +3,19 @@ import time
 
 # --- Choose Your Tracker ---
 # Uncomment only one of the following lines to select the tracker.
-
+#
 # tracker = cv2.legacy.TrackerMOSSE_create()  # Very fast, lightweight; may struggle with scale/rotation changes.
 # tracker_name = "MOSSE"
 
-tracker = cv2.legacy.TrackerKCF_create()    # Fast with kernelized correlation; moderate robustness.
-tracker_name = "KCF"
+# tracker = cv2.legacy.TrackerKCF_create()    # Fast with kernelized correlation; moderate robustness.
+# tracker_name = "KCF"
 
-# tracker = cv2.legacy.TrackerCSRT_create()       # More robust to scale, rotation and occlusion; slightly slower.
-# tracker_name = "CSRT"
+tracker = cv2.legacy.TrackerCSRT_create()       # More robust to scale, rotation and occlusion; slightly slower.
+tracker_name = "CSRT"
 
 # --- Video Capture Setup ---
 # Change video_path to 0 for webcam or a path to your video file.
-video_path = "./12430396-hd_1920_1080_30fps.mp4"
+video_path = "./waterfall.mp4"
 cap = cv2.VideoCapture(video_path)
 
 prev_frame_time = 0
