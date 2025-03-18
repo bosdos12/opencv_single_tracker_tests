@@ -1,9 +1,7 @@
 import cv2
 import time
 
-# --- Choose Your Tracker ---
-# Uncomment only one of the following lines to select the tracker.
-#
+
 # tracker = cv2.legacy.TrackerMOSSE_create()  # Very fast, lightweight; may struggle with scale/rotation changes.
 # tracker_name = "MOSSE"
 
@@ -13,8 +11,7 @@ import time
 tracker = cv2.legacy.TrackerCSRT_create()       # More robust to scale, rotation and occlusion; slightly slower.
 tracker_name = "CSRT"
 
-# --- Video Capture Setup ---
-# Change video_path to 0 for webcam or a path to your video file.
+
 video_path = "./waterfall.mp4"
 cap = cv2.VideoCapture(video_path)
 
@@ -32,7 +29,6 @@ if not ret:
     exit()
 
 # --- Manual ROI Selection ---
-# Let the user draw a square ROI on the first frame.
 # Press SPACE or ENTER to confirm the selection, 'c' to cancel.
 roi = cv2.selectROI("Select ROI", frame, fromCenter=False, showCrosshair=True)
 cv2.destroyWindow("Select ROI")
@@ -77,6 +73,7 @@ while True:
     key = cv2.waitKey(1) & 0xFF
     if key == 27:  # Press ESC to exit.
         break
+
 
 cap.release()
 cv2.destroyAllWindows()
