@@ -1,0 +1,1 @@
+Simple git repo to get started with, and test common SOT (single object trackers) available in OpenCV.
