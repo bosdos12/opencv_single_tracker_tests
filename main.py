@@ -5,8 +5,13 @@ import time
 # Uncomment only one of the following lines to select the tracker.
 
 # tracker = cv2.legacy.TrackerMOSSE_create()  # Very fast, lightweight; may struggle with scale/rotation changes.
+# tracker_name = "MOSSE"
+
 tracker = cv2.legacy.TrackerKCF_create()    # Fast with kernelized correlation; moderate robustness.
+tracker_name = "KCF"
+
 # tracker = cv2.legacy.TrackerCSRT_create()       # More robust to scale, rotation and occlusion; slightly slower.
+# tracker_name = "CSRT"
 
 # --- Video Capture Setup ---
 # Change video_path to 0 for webcam or a path to your video file.
@@ -65,7 +70,7 @@ while True:
     # Display current FPS to the User.
     current_fps = 1 / (new_frame_time - prev_frame_time)
     prev_frame_time = new_frame_time
-    cv2.putText(frame, f"FPS: {current_fps:.2f}", (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 180, 0), 2)
+    cv2.putText(frame, f"{tracker_name} - FPS: {current_fps:.2f}", (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 180, 0), 2)
 
 
     cv2.imshow("Tracker", frame)
