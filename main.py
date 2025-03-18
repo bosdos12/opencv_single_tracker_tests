@@ -2,78 +2,97 @@ import cv2
 import time
 
 
-# tracker = cv2.legacy.TrackerMOSSE_create()  # Very fast, lightweight; may struggle with scale/rotation changes.
-# tracker_name = "MOSSE"
 
-# tracker = cv2.legacy.TrackerKCF_create()    # Fast with kernelized correlation; moderate robustness.
-# tracker_name = "KCF"
+screen_size = (1920, 1080)
 
-tracker = cv2.legacy.TrackerCSRT_create()       # More robust to scale, rotation and occlusion; slightly slower.
-tracker_name = "CSRT"
+class SOTObjectTracker:
+    def __init__(self):
+
+        self.prev_frame_time = 0
+        self.new_frame_time = time.time()
+
+        self.tracker = None
+        self.tracker_name = None
+
+        #initialize the capture
+        # /home/adak/Desktop/AcemSolutions/acem_tracker/Videos
+        self.video_path = "/home/adak/Desktop/AcemSolutions/acem_tracker/Videos/trackfromleft.mp4"
+        self.cap = cv2.VideoCapture(self.video_path)
+
+        self.track_object()
+
+    def select_object(self, frame):
+        # --- Manual ROI Selection ---
+        # Press SPACE or ENTER to confirm the selection, 'c' to cancel.
+        roi = cv2.selectROI("Select ROI", frame, fromCenter=False, showCrosshair=True)
+        cv2.destroyWindow("Select ROI")
+
+        # self.tracker = cv2.legacy.TrackerMOSSE_create()  # Very fast, lightweight; may struggle with scale/rotation changes.
+        # self.tracker_name = "MOSSE"
+
+        # self.tracker = cv2.legacy.TrackerKCF_create()    # Fast with kernelized correlation; moderate robustness.
+        # self.tracker_name = "KCF"
+
+        self.tracker = cv2.legacy.TrackerCSRT_create()  # More robust to scale, rotation and occlusion; slightly slower.
+        self.tracker_name = "CSRT"
+
+        # Initialize the tracker with the selected ROI.
+        ok = self.tracker.init(frame, roi)
+        if not ok:
+            print("Error: Tracker initialization failed.")
+            exit()
+
+    def track_object(self):
+        # --- Tracking Loop ---
+        while True:
+            self.new_frame_time = time.time()
+
+            ret, frame = self.cap.read()
+            if not ret:
+                break
+
+            # Update tracker and get updated bounding box.
+            if (self.tracker):
+                ok, bbox = self.tracker.update(frame)
+
+                if ok:
+                    # Tracking success: draw the tracked ROI as a rectangle.
+                    x, y, w, h = [int(v) for v in bbox]
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                    cv2.putText(frame, "Tracking", (x, y - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+                else:
+                    # Tracking failure: display failure message.
+                    cv2.putText(frame, "Lost Track", (100, 80),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 2)
+            else:
+                # No tracker present: display info message.
+                cv2.putText(frame, "No tracker present", (100, 80),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 255), 2)
+
+            # Display current FPS to the User.
+            current_fps = 1 / (self.new_frame_time - self.prev_frame_time)
+            self.prev_frame_time = self.new_frame_time
+            cv2.putText(frame, f"{self.tracker_name} - FPS: {current_fps:.2f}", (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
+                        (0, 180, 0), 2)
+
+            cv2.imshow("Tracker", cv2.resize(frame, screen_size))
+            key = cv2.waitKey(1) & 0xFF
+            if key == 27:  # Press ESC to exit.
+                break
+            elif key == ord('l'):
+                self.select_object(frame)
+            elif key == ord("k"):
+                self.tracker = None
+                self.tracker_name = None
 
 
-video_path = "./tank_catastrophic.mp4"
-cap = cv2.VideoCapture(video_path)
-
-prev_frame_time = 0
-
-if not cap.isOpened():
-    print("Error: Could not open video.")
-    exit()
-
-# Read the first frame.
-ret, frame = cap.read()
-if not ret:
-    print("Error: Could not read frame.")
-    cap.release()
-    exit()
-
-# --- Manual ROI Selection ---
-# Press SPACE or ENTER to confirm the selection, 'c' to cancel.
-roi = cv2.selectROI("Select ROI", frame, fromCenter=False, showCrosshair=True)
-cv2.destroyWindow("Select ROI")
-
-# Initialize the tracker with the selected ROI.
-ok = tracker.init(frame, roi)
-if not ok:
-    print("Error: Tracker initialization failed.")
-    cap.release()
-    exit()
-
-# --- Tracking Loop ---
-while True:
-    new_frame_time = time.time()
-
-    ret, frame = cap.read()
-    if not ret:
-        break
-
-    # Update tracker and get updated bounding box.
-    ok, bbox = tracker.update(frame)
-
-    if ok:
-        # Tracking success: draw the tracked ROI as a rectangle.
-        x, y, w, h = [int(v) for v in bbox]
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        cv2.putText(frame, "Tracking", (x, y - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-    else:
-        # Tracking failure: display failure message.
-        cv2.putText(frame, "Lost Track", (100, 80),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 2)
 
 
-    # Display current FPS to the User.
-    current_fps = 1 / (new_frame_time - prev_frame_time)
-    prev_frame_time = new_frame_time
-    cv2.putText(frame, f"{tracker_name} - FPS: {current_fps:.2f}", (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 180, 0), 2)
+if __name__ == "__main__":
+    SOTObjectTracker()
 
 
-    cv2.imshow("Tracker", frame)
-    key = cv2.waitKey(1) & 0xFF
-    if key == 27:  # Press ESC to exit.
-        break
 
 
-cap.release()
-cv2.destroyAllWindows()
+
