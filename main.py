@@ -21,7 +21,7 @@ class SOTObjectTracker:
 
         #initialize the capture
         # /home/adak/Desktop/AcemSolutions/acem_tracker/Videos
-        self.video_path = "./videos/light/light_mountainrode.mp4"
+        self.video_path = "./videos/light/light_tank_catastrophic.mp4"
         self.cap = cv2.VideoCapture(self.video_path)
 
         self.track_object()
