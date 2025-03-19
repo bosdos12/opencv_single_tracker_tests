@@ -1,7 +1,11 @@
 import cv2
 import time
 
-
+num_cuda_devices = cv2.cuda.getCudaEnabledDeviceCount()
+if num_cuda_devices > 0:
+    print(f"CUDA is available. Number of CUDA-enabled devices: {num_cuda_devices}")
+else:
+    print("No CUDA-enabled devices found. Running on CPU.")
 
 screen_size = (1920, 1080)
 
@@ -16,7 +20,7 @@ class SOTObjectTracker:
 
         #initialize the capture
         # /home/adak/Desktop/AcemSolutions/acem_tracker/Videos
-        self.video_path = "/home/adak/Desktop/AcemSolutions/acem_tracker/Videos/trackfromleft.mp4"
+        self.video_path = "./videos"
         self.cap = cv2.VideoCapture(self.video_path)
 
         self.track_object()

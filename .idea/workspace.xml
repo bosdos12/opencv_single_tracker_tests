@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c55f71b2-b25b-4d31-af87-bda083364eea" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/mainbackup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dessert_aerial.mp4" beforeDir="false" afterPath="$PROJECT_DIR$/videos/dessert_aerial.mp4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mountainrode.mp4" beforeDir="false" afterPath="$PROJECT_DIR$/videos/mountainrode.mp4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tank_catastrophic.mp4" beforeDir="false" afterPath="$PROJECT_DIR$/videos/tank_catastrophic.mp4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/waterfall.mp4" beforeDir="false" afterPath="$PROJECT_DIR$/videos/waterfall.mp4" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +49,11 @@
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/videos" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
